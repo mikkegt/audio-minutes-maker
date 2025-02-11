@@ -32,6 +32,7 @@ pip install pydub openai-whisper torch ffmpeg-python
 ```
 
 4. ffmpegのインストール（macOS）
+
 現在の環境を確認:
 ```bash
 arch
