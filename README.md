@@ -119,3 +119,60 @@ brew uninstall ffmpeg
 ## ⚠️ 注意事項
 - 処理時間は音声の長さやモデルサイズによって変動します
 - large モデルは高精度ですが、より多くのリソースと時間を必要とします
+
+## 🎭 話者分離機能
+
+音声ファイルから話者を識別し、誰が何を言ったかを区別する機能を追加しました。
+
+### 📋 追加で必要なもの
+- Hugging Faceアカウントとアクセストークン
+- 追加のPythonパッケージ
+
+### 🚀 セットアップ手順
+
+1. 追加パッケージのインストール
+```bash
+pip install pyannote.audio python-dotenv
+```
+
+2. Hugging Faceアカウントの作成と設定
+   - [Hugging Face](https://huggingface.co/join)でアカウント作成
+   - Settings → Access Tokensからトークンを作成
+   - 以下のモデルへのアクセス許可を得る（「Agree and access repository」をクリック）：
+     - [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)
+     - [pyannote/segmentation-3.0](https://huggingface.co/pyannote/segmentation-3.0)
+
+3. 環境変数の設定
+   - `.env.template`をコピーして`.env`ファイルを作成
+   ```bash
+   cp .env.template .env
+   ```
+   - `.env`ファイルを編集し、Hugging Faceトークンを設定
+   ```
+   HF_TOKEN=your_token_here
+   ```
+
+### 🎯 話者分離機能の使用方法
+
+1. 入力ファイルの準備（通常版と同様）
+
+2. 話者分離付き文字起こしの実行
+```bash
+python transcribe_diarize.py
+```
+
+3. 出力ファイル
+   - `diarized_transcripts/<ファイル名>_diarized.txt` - 話者情報付きのテキスト形式
+   - `diarized_transcripts/<ファイル名>_diarized.json` - 詳細な話者・時間情報のJSON形式
+
+### 📊 出力形式の例
+```
+[00:01:25.340 --> 00:01:35.120] SPEAKER_00: こんにちは、本日の会議を始めましょう。
+[00:01:36.580 --> 00:01:42.750] SPEAKER_01: はい、よろしくお願いします。まず最初の議題についてですが...
+```
+
+### ⚠️ 注意事項
+- 初回実行時はモデルのダウンロードに時間がかかります
+- 複数の話者がいる場合、区別の精度は録音状態に依存します
+- 各話者には自動的に「SPEAKER_00」「SPEAKER_01」などの識別子が割り当てられます
+- 最良の結果を得るには、クリアな音声と話者間の十分な音響的差異が必要です
