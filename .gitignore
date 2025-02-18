@@ -132,6 +132,7 @@ Icon
 *.aac
 split_audio/
 transcripts/
+diarized_transcripts/
 *.txt
 !requirements.txt
 !README.md
